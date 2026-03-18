@@ -29,9 +29,17 @@ function ensureAuthenticated(req, res, next) {
   res.redirect('/login');
 }
 
+const showHomePage = (req, res) => {
+    if (req.isAuthenticated()) {
+       return res.redirect('/dashboard');
+    }
+    res.render('home');
+};
+
 module.exports = {
     createUser,
     showLogInForm,
+    showHomePage,
     showSignUpForm,
     ensureAuthenticated
 };

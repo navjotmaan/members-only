@@ -1,0 +1,15 @@
+<% if (currentUser && currentUser.id === userId) { %>
+  <a href="/message/form">Add message</a>
+  <% if (messages.length !== 0) { %>
+    <% messages.forEach(message => { %>
+      <p><%= message.title %></p>
+      <p><%= message.message %></p>
+    <% }); %>
+  <% } else { %>
+    <p>There's no message here.</p>
+  <% } %>
+
+  <a href="/logout">Logout</a>
+<% } else { %>
+  <a href="/login">Login</a>
+<% } %>

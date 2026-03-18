@@ -3,8 +3,11 @@ const userRouter = Router();
 const passport = require('passport');
 
 const userController = require('../controllers/userController');
+const messageController = require('../controllers/messageController');
 
-userRouter.get('/', userController.showSignUpForm);
+userRouter.get('/', userController.showHomePage);
+
+userRouter.get('/sign-up', userController.showSignUpForm);
 userRouter.post('/sign-up', userController.createUser);
 userRouter.get('/login', userController.showLogInForm);
 
@@ -22,8 +25,6 @@ userRouter.get("/logout", (req, res, next) => {
   });
 });
 
-userRouter.get('/dashboard', userController.ensureAuthenticated, (req, res) => {
-  res.render('dashboard', { user: req.user });
-});
+userRouter.get('/dashboard', userController.ensureAuthenticated, messageController.getAllMessages);
 
 module.exports = userRouter;
