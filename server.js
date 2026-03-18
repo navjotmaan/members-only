@@ -4,9 +4,9 @@ const path = require('node:path');
 const session = require('express-session');
 const passport = require('passport');
 const pgSession = require('connect-pg-simple')(session);
-const pool = require('./db/pool');
+const pool = require('./src/db/pool');
 
-require('./config/passport');
+require('./src/config/passport');
 
 const app = express();
 
@@ -14,9 +14,6 @@ const public = path.join(__dirname, 'public');
 app.use(express.static(public));
 
 app.use(express.urlencoded({ extended: true }));
-
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
 
 app.use(session({
   store: new pgSession({
@@ -32,9 +29,19 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-const userRoute = require('./routes/userRouter');
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  next();
+});
+
+app.set('views', path.join(__dirname, 'src/views'));
+app.set('view engine', 'ejs');
+
+const userRoute = require('./src/routes/userRoute');
+const messageRoute = require('./src/routes/messageRoute');
 
 app.use('/', userRoute);
+app.use('/message', messageRoute);
 
 const PORT = process.env.PORT || 3000;
 
