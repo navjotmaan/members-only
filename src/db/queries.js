@@ -13,8 +13,15 @@ async function getAllMessages() {
     return rows;
 }
 
+async function checkEmail(email) {
+    const { rows } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    console.log(rows);
+    return rows;
+}
+
 module.exports = {
     createUser,
     createMessage,
-    getAllMessages
+    getAllMessages,
+    checkEmail
 };
