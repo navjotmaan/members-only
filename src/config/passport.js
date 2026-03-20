@@ -11,9 +11,9 @@ passport.use(new LocalStrategy({
       const { rows } = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
       const user = rows[0];
 
-      if (!user) return done(null, false, { message: "Incorrect username" });
+      if (!user) return done(null, false, { message: "Incorrect email" });
       
-      const match = bcrypt.compare(password, user.password);
+      const match = await bcrypt.compare(password, user.password);
       if (!match) return done(null, false, { message: "Incorrect password" });
 
       return done(null, user);
