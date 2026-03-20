@@ -1,11 +1,17 @@
 const db = require('../db/queries');
 const bcrypt = require('bcryptjs');
+const { validationResult } = require('express-validator');
 
 const showSignUpForm = (req, res) => {
     res.render('sign-up');
 };
 
-async function createUser(req, res) {
+async function createUser(req, res) { 
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).render('sign-up', { errors: errors.array() });
+    }
+
     try {
         const { firstname, lastname, email, password } = req.body;
         const separator = email.indexOf('@');
@@ -13,7 +19,7 @@ async function createUser(req, res) {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         await db.createUser(firstname, lastname, email, username, hashedPassword);
-        res.status(201).json('user created');
+        res.redirect('/dashboard');
     } catch (err) {
         console.log(err);
         res.status(500).send('Error creating user');
@@ -22,6 +28,15 @@ async function createUser(req, res) {
 
 const showLogInForm = (req, res) => {
     res.render('login');
+};
+
+const logoutUser = (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
 };
 
 function ensureAuthenticated(req, res, next) {
@@ -39,7 +54,8 @@ const showHomePage = (req, res) => {
 module.exports = {
     createUser,
     showLogInForm,
+    logoutUser,
     showHomePage,
     showSignUpForm,
-    ensureAuthenticated
+    ensureAuthenticated,
 };
