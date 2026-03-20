@@ -31,3 +31,13 @@ exports.validateSignUp = [
       return true;
     })
 ];
+
+exports.validateLogin = [
+  body('email')
+    .isEmail().withMessage('Please enter a valid email')
+    .normalizeEmail(), 
+  
+  body('password')
+    .isLength({ min: 1 }).withMessage('Please enter a password')
+    .trim()
+];
