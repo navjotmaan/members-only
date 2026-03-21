@@ -1,15 +1,40 @@
-<% if (currentUser && currentUser.id === userId) { %>
-  <a href="/message/form">Add message</a>
-  <% if (messages.length !== 0) { %>
-    <% messages.forEach(message => { %>
-      <p><%= message.title %></p>
-      <p><%= message.message %></p>
-    <% }); %>
-  <% } else { %>
-    <p>There's no message here.</p>
-  <% } %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+  <title>ConvoHub</title>
+</head>
+<body>
+  
+  <div class="relative p-10">
+    <header class="mb-10">
+      <a href="/message/form" class="mx-80 bg-purple-500 text-white rounded py-1 font-semibold px-3">Write message</a>
+      <a href="/logout" class="absolute right-5 top-5 bg-red-500 text-white rounded py-1 font-semibold px-3">Logout</a>
+    </header>
 
-  <a href="/logout">Logout</a>
-<% } else { %>
-  <a href="/login">Login</a>
-<% } %>
+    <% if (messages.length !== 0) { %>
+      <% messages.forEach(message => { %>
+    
+        <div class="border m-auto rounded-xl mt-8 p-5 w-150">
+          <span class="flex justify-between mb-1">
+            <span class="flex gap-1">
+              <p class="font-semibold"><%= message.firstname %></p>
+              <p class="font-semibold"><%= message.lastname %></p>
+              <p class="text-purple-500">@<%= message.username %></p>
+            </span>
+            
+            <p><%= new Date(message.created_at).toLocaleString() %></p>
+          </span>
+          <p class="text-orange-500 font-semibold text-lg"><%= message.title %></p>
+          <p><%= message.message %></p>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <p>There's no message here.</p>
+    <% } %>
+  </div>
+
+</body>
+</html>
