@@ -9,7 +9,7 @@ async function createMessage(user_id, title, message) {
 }
 
 async function getAllMessages() {
-    const { rows } = await pool.query(`SELECT messages.title, messages.message, messages.created_at, users.firstname, users.lastname, users.username FROM messages 
+    const { rows } = await pool.query(`SELECT messages.title, messages.message, messages.created_at, users.firstname, users.lastname, users.username, users.membership FROM messages 
     JOIN users ON messages.user_id = users.id ORDER BY messages.id DESC`);
     return rows;
 }
@@ -20,9 +20,14 @@ async function checkEmail(email) {
     return rows;
 }
 
+async function upgradeMembership(id) {
+    await pool.query('UPDATE users SET membership = true WHERE id = $1', [id]);
+}
+
 module.exports = {
     createUser,
     createMessage,
     getAllMessages,
-    checkEmail
+    checkEmail,
+    upgradeMembership
 };
