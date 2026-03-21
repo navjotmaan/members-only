@@ -9,7 +9,8 @@ async function createMessage(user_id, title, message) {
 }
 
 async function getAllMessages() {
-    const { rows } = await pool.query('SELECT * FROM messages ORDER BY id DESC');
+    const { rows } = await pool.query(`SELECT messages.title, messages.message, messages.created_at, users.firstname, users.lastname, users.username FROM messages 
+    JOIN users ON messages.user_id = users.id ORDER BY messages.id DESC`);
     return rows;
 }
 
