@@ -41,3 +41,11 @@ exports.validateLogin = [
     .isLength({ min: 1 }).withMessage('Please enter a password')
     .trim()
 ];
+
+exports.validateMessage = [
+  body('title')
+    .isLength({ min: 1, max: 20 }).withMessage('Title must be between 1 and 20 characters'),
+  
+  body('message')
+    .isLength({ min: 1 }).withMessage('Please write a message')
+];
