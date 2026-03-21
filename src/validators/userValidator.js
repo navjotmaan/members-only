@@ -49,3 +49,8 @@ exports.validateMessage = [
   body('message')
     .isLength({ min: 1 }).withMessage('Please write a message')
 ];
+
+exports.validateMembership = [
+  body('code')
+    .isLength({ min: 5 }).withMessage('Please enter correct code'),
+];
