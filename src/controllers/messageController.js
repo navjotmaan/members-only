@@ -26,13 +26,18 @@ async function createMessage(req, res) {
 }
 
 async function getAllMessages(req, res) {
-    const userId = req.user.id;
-    const messages = await db.getAllMessages();
-    res.render('dashboard', { userId, messages });
+    try {
+        const userId = req.user.id;
+        const messages = await db.getAllMessages();
+        res.render('dashboard', { userId, messages });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('Error getting messages');
+    }
 }
 
 module.exports = {
     createMessage,
     showMessageForm,
-    getAllMessages
+    getAllMessages,
 };
