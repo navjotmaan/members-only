@@ -4,34 +4,40 @@ const passport = require('passport');
 const { validationResult } = require('express-validator');
 
 const showSignUpForm = (req, res) => {
-    res.render('sign-up');
+  if (req.isAuthenticated()) {
+    return res.redirect('/dashboard');
+  }
+  res.render('sign-up');
 };
 
 async function createUser(req, res) { 
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).render('sign-up', { 
-            errors: errors.array(),
-            oldInput: req.body
-        });
-    }
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).render('sign-up', { 
+      errors: errors.array(),
+      oldInput: req.body
+    });
+  }
 
-    try {
-        const { firstname, lastname, email, password } = req.body;
-        const separator = email.indexOf('@');
-        const username = email.slice(0, separator);
-        const hashedPassword = await bcrypt.hash(password, 10);
+  try {
+    const { firstname, lastname, email, password } = req.body;
+    const separator = email.indexOf('@');
+    const username = email.slice(0, separator);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-        await db.createUser(firstname, lastname, email, username, hashedPassword);
-        res.redirect('/dashboard');
-    } catch (err) {
-        console.log(err);
-        res.status(500).send('Error creating user');
-    }
+    await db.createUser(firstname, lastname, email, username, hashedPassword);
+    res.redirect('/dashboard');
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Error creating user');
+  }
 }
 
 const showLogInForm = (req, res) => {
-    res.render('login');
+  if (req.isAuthenticated()) {
+    return res.redirect('/dashboard');
+  }
+  res.render('login');
 };
 
 const logoutUser = (req, res, next) => {
@@ -68,25 +74,25 @@ const checkLoginInfo = (req, res, next) => {
     }
 
     req.logIn(user, (err) => {
-      if (err) return next(err);
+    if (err) return next(err);
       return res.redirect('/dashboard');
     });
   })(req, res, next); 
 };
 
 const showHomePage = (req, res) => {
-    if (req.isAuthenticated()) {
-       return res.redirect('/dashboard');
-    }
-    res.render('home');
+  if (req.isAuthenticated()) {
+    return res.redirect('/dashboard');
+  }
+  res.render('home');
 };
 
 module.exports = {
-    createUser,
-    showLogInForm,
-    logoutUser,
-    showHomePage,
-    showSignUpForm,
-    ensureAuthenticated,
-    checkLoginInfo
+  createUser,
+  showLogInForm,
+  logoutUser,
+  showHomePage,
+  showSignUpForm,
+  ensureAuthenticated,
+  checkLoginInfo
 };
