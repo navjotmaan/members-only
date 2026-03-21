@@ -39,9 +39,11 @@ app.set('view engine', 'ejs');
 
 const userRoute = require('./src/routes/userRoute');
 const messageRoute = require('./src/routes/messageRoute');
+const upgradeRoute = require('./src/routes/upgradeRoute');
 
 app.use('/', userRoute);
 app.use('/message', messageRoute);
+app.use('/upgrade', upgradeRoute);
 
 const PORT = process.env.PORT || 3000;
 
