@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "build:css": "npx @tailwindcss/cli -i ./src/input.css -o ./public/css/style.css",
+    "build:css": "npx @tailwindcss/cli -i ./src/input.css -o ./public/css/style.css --minify",
+    "setup:db": "node src/db/schema.js",
+    "build": "npm run build:css && npm run setup:db",
     "watch:css": "npx @tailwindcss/cli -i ./src/input.css -o ./public/css/style.css --watch"
   },
   "repository": {
