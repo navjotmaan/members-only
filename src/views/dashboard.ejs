@@ -15,7 +15,7 @@
         <a href="/upgrade" class="bg-purple-500 text-white rounded py-1 font-semibold px-3 w-30 text-center <%= currentUser.membership ? 'hidden' : '' %>">Upgrade</a>
       </span>
 
-      <p class="m-auto mt-5 font-semibold text-lg text-green-500"><%= currentUser.membership ? '' : 'Upgrade to see users' %></p>
+      <p class="m-auto mt-5 font-semibold text-lg text-white"><%= currentUser.membership ? '' : 'Upgrade to see users' %></p>
       
       <a href="/logout" class="absolute right-5 top-5 bg-red-500 text-white rounded py-1 font-semibold px-3">Logout</a>
     </header>
@@ -28,17 +28,17 @@
             <span class="flex gap-1">
               <p class="font-semibold <%= currentUser.membership ? '' : 'blur-[3px]' %>"><%= message.firstname %></p>
               <p class="font-semibold <%= currentUser.membership ? '' : 'blur-[3px]' %>"><%= message.lastname %></p>
-              <p class="text-purple-500 <%= currentUser.membership ? '' : 'blur-[3px]' %>">@<%= message.username %></p>
+              <p class="text-purple-400 <%= currentUser.membership ? '' : 'blur-[3px]' %>">@<%= message.username %></p>
             </span>
             
             <p class="<%= currentUser.membership ? '' : 'blur-[3px]' %>"><%= new Date(message.created_at).toLocaleString() %></p>
           </span>
-          <p class="text-orange-500 font-semibold text-lg"><%= message.title %></p>
+          <p class="text-yellow-400 font-semibold text-lg"><%= message.title %></p>
           <p><%= message.message %></p>
         </div>
       <% }); %>
     <% } else { %>
-      <p>There's no message here.</p>
+      <p class="text-center">There's no message here.</p>
     <% } %>
   </div>
 
