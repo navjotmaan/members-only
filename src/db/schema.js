@@ -2,10 +2,8 @@ require('dotenv').config();
 const { Client } = require('pg');
 
 const SQL = `
-DROP TABLE IF EXISTS messages;
-DROP TABLE IF EXISTS users;
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     firstname VARCHAR(255),
     lastname VARCHAR(255),
@@ -15,7 +13,7 @@ CREATE TABLE users (
     membership BOOLEAN
 );
 
-CREATE TABLE messages (
+CREATE TABLE IF NOT EXISTS messages (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL,
     title TEXT,
